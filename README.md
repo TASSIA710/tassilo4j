@@ -1,2 +1,2 @@
-# tassilo4j
+# Tassilo4J
 Simple Java library offering some useful functions.
