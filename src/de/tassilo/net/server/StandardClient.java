@@ -63,6 +63,9 @@ public class StandardClient extends Client {
 		socket.shutdownInput();
 		socket.shutdownOutput();
 		socket.close();
+		for (ClientDisconnectedListener listener : server.clientDisconnectedListeners)
+			listener.onClientDisconnected(this, server);
+		getServer().clients.remove(this);
 		getServer().logger.info("Client " + getUserID() + " has been disconnected (closed).");
 	}
 	
@@ -70,6 +73,9 @@ public class StandardClient extends Client {
 	public void terminate() throws IOException {
 		if (!isConnected()) return;
 		socket.close();
+		for (ClientDisconnectedListener listener : server.clientDisconnectedListeners)
+			listener.onClientDisconnected(this, server);
+		getServer().clients.remove(this);
 		getServer().logger.info("Client " + getUserID() + " has been disconnected (terminated).");
 	}
 	
