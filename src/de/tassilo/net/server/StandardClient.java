@@ -66,7 +66,7 @@ public class StandardClient extends Client {
 		for (ClientDisconnectedListener listener : server.clientDisconnectedListeners)
 			listener.onClientDisconnected(this, server);
 		getServer().clients.remove(this);
-		getServer().logger.info("Client " + getUserID() + " has been disconnected (closed).");
+		getServer().logger.fine("Client " + getUserID() + " has been disconnected (closed).");
 	}
 	
 	@Override
@@ -76,7 +76,7 @@ public class StandardClient extends Client {
 		for (ClientDisconnectedListener listener : server.clientDisconnectedListeners)
 			listener.onClientDisconnected(this, server);
 		getServer().clients.remove(this);
-		getServer().logger.info("Client " + getUserID() + " has been disconnected (terminated).");
+		getServer().logger.fine("Client " + getUserID() + " has been disconnected (terminated).");
 	}
 	
 	@Override

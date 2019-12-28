@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -147,6 +148,9 @@ public class StandardServer extends Server {
 		
 		logger.fine("Shutting down socket listener...");
 		socketListenerService.shutdownNow();
+		try {
+			socketListenerService.awaitTermination(1, TimeUnit.SECONDS);
+		} catch (InterruptedException ignored) {}
 		socketListenerService = null;
 		
 		logger.fine("Shutting down client handlers...");
@@ -206,7 +210,7 @@ public class StandardServer extends Server {
 		for (ClientConnectedListener listener : clientConnectedListeners)
 			listener.onClientConnected(client, this);
 		
-		logger.info("Client " + client.getUserID() + " connected from " + client.getAddress().getHostAddress() + ":" + client.getPort());
+		logger.fine("Client " + client.getUserID() + " connected from " + client.getAddress().getHostAddress() + ":" + client.getPort());
 	}
 	
 	
