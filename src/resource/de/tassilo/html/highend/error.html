@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title>{error_code} {error_name}</title>
+
+		<style type="text/css">
+			@import url('https://fonts.googleapis.com/css?family=Nunito');
+			body {
+				background: white;
+				font-family: Nunito;
+				padding: 5%;
+				background: #fff;
+				margin: 0;
+				height: calc(100vh - 10%);
+			}
+			h1 {
+				font-size: 1000%;
+				padding: 0;
+				margin: 0;
+				color: #c0392b;
+				text-shadow: 0 0 4px #e74c3c;
+			}
+			h2 {
+				font-size: 250%;
+				padding: 0;
+				margin: 0;
+				margin-top: -2%;
+				margin-bottom: 2%;
+				letter-spacing: 0.1em;
+				font-style: italic;
+				color: #c0392b;
+				text-shadow: 0 0 2px #e74c3c;
+				animation: letterSpacingAnimation 4s ease 0s infinite alternate;
+			}
+			h3, h4 {
+				font-size: 125%;
+				padding: 0;
+				margin: 2% 0 4% 0;
+				color: rgb(127, 127, 127);
+				font-weight: 400;
+			}
+			h4 {
+				position: absolute;
+				text-align: center;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				margin: 0 0 16px 0;
+				font-size: 16px;
+			}
+			hr {
+				border: 1px solid #c0392b;
+				box-shadow: 0 0 2px #e74c3c;
+				margin-right: 75%;
+			}
+			@keyframes letterSpacingAnimation {
+				0%, 25% {
+					letter-spacing: 0;
+				}
+				75%, 100% {
+					letter-spacing: 1px;
+				}
+			}
+		</style>
+
+	</head>
+
+
+
+	<body>
+		<h1>{error_code}</h1>
+		<h2>{error_name}</h2>
+		<hr>
+		<h3>{error_description}</h3>
+		<h4>{server_name}</h4>
+	</body>
+
+</html>
