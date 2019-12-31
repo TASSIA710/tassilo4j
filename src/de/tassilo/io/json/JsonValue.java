@@ -1,4 +1,4 @@
-package de.tassilo.json;
+package de.tassilo.io.json;
 
 public class JsonValue {
 	public static final int TYPE_NULL		= 0x00;

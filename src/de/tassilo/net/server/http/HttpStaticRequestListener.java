@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.text.ParseException;
 
-import de.tassilo.json.JsonObject;
-import de.tassilo.json.JsonReader;
+import de.tassilo.io.json.JsonObject;
+import de.tassilo.io.json.JsonReader;
 
 public class HttpStaticRequestListener implements HttpRequestListener {
 	private final File source;

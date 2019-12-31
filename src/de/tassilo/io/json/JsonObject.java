@@ -1,4 +1,4 @@
-package de.tassilo.json;
+package de.tassilo.io.json;
 
 import java.util.HashMap;
 import java.util.Map;

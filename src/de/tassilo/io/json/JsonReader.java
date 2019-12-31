@@ -1,4 +1,4 @@
-package de.tassilo.json;
+package de.tassilo.io.json;
 
 import java.io.IOException;
 import java.io.Reader;
