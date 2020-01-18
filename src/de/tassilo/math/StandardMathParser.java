@@ -1,4 +1,4 @@
-package de.tassilo;
+package de.tassilo.math;
 
 class StandardMathParser extends MathParser {
 	protected String expression;

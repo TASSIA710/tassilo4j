@@ -1,4 +1,4 @@
-package de.tassilo;
+package de.tassilo.math;
 
 public abstract class MathParser {
 	

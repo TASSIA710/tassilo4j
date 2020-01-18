@@ -1,4 +1,4 @@
-package de.tassilo;
+package de.tassilo.math;
 
 public class Math {
 	
@@ -6,7 +6,7 @@ public class Math {
 	}
 	
 	public static double parse(String expression) {
-		return new StandardMathParser().parse(expression);
+		return ComplexMath.parse(expression);
 	}
 	
 }
