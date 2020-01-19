@@ -17,7 +17,32 @@ public class JsonObject extends JsonValue {
 	
 	
 	
+	public void setValue(String field, String value) {
+		setValue(field, value == null ? JsonValue.NULL : JsonValue.getStringValue(value));
+	}
+	
+	public void setValue(String field, boolean value) {
+		setValue(field, value ? JsonValue.TRUE : JsonValue.FALSE);
+	}
+	
+	public void setValue(String field, int value) {
+		setValue(field, JsonValue.getNumberValue(value));
+	}
+	
+	public void setValue(String field, long value) {
+		setValue(field, JsonValue.getNumberValue(value));
+	}
+	
+	public void setValue(String field, float value) {
+		setValue(field, JsonValue.getNumberValue(value));
+	}
+	
+	public void setValue(String field, double value) {
+		setValue(field, JsonValue.getNumberValue(value));
+	}
+	
 	public void setValue(String field, JsonValue value) {
+		if (value == null) value = JsonValue.NULL;
 		values.put(field, value);
 	}
 	
