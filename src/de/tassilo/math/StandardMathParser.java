@@ -3,14 +3,14 @@ package de.tassilo.math;
 class StandardMathParser extends MathParser {
 	protected String expression;
 	protected int pos = -1, ch;
-	
+
 	StandardMathParser() {
 	}
-	
+
 	void nextChar() {
 		ch = (++pos < expression.length()) ? expression.charAt(pos) : -1;
 	}
-	
+
 	boolean eat(int charToEat) {
 		while (ch == ' ') nextChar();
 		if (ch == charToEat) {
@@ -19,7 +19,7 @@ class StandardMathParser extends MathParser {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public double parse(String expression) {
 		this.expression = expression.trim().toLowerCase();
@@ -28,7 +28,7 @@ class StandardMathParser extends MathParser {
 		if (pos < expression.length()) throw new RuntimeException("Unexpected: " + (char)ch);
 		return x;
 	}
-	
+
 	double parseExpression() {
 		double x = parseTerm();
 		for (;;) {
@@ -37,7 +37,7 @@ class StandardMathParser extends MathParser {
 			else return x;
 		}
 	}
-	
+
 	double parseTerm() {
 		double x = parseFactor();
 		for (;;) {
@@ -46,11 +46,11 @@ class StandardMathParser extends MathParser {
 			else return x;
 		}
 	}
-	
+
 	double parseFactor() {
 		if (eat('+')) return parseFactor();
 		if (eat('-')) return -parseFactor();
-		
+
 		double x;
 		int startPos = this.pos;
 		if (eat('(')) {
@@ -71,9 +71,9 @@ class StandardMathParser extends MathParser {
 		} else {
 			throw new RuntimeException("Unexpected: " + (char)ch);
 		}
-		
+
 		if (eat('^')) x = StrictMath.pow(x, parseFactor());
 		return x;
 	}
-	
+
 }

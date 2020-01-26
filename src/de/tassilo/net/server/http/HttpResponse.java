@@ -15,76 +15,76 @@ public class HttpResponse {
 	private HttpStatus httpStatus;
 	private HttpResponseHeaders headers;
 	private ByteArrayOutputStream content;
-	
-	
-	
+
+
+
 	public HttpResponse(HttpVersion version) {
 		this(version, 1024);
 	}
-	
+
 	public HttpResponse(HttpVersion version, int capacity) {
 		httpVersion = version;
 		httpStatus = HttpStatus.STATUS_200;
 		headers = new HttpResponseHeaders();
 		content = new ByteArrayOutputStream(capacity);
-		
+
 		getHeaders().setConnection(false);
 		getHeaders().setDate();
 		getHeaders().setServer();
 	}
-	
-	
-	
+
+
+
 	public HttpVersion getVersion() {
 		return httpVersion;
 	}
-	
+
 	public HttpStatus getStatus() {
 		return httpStatus;
 	}
-	
+
 	public void setStatus(HttpStatus status) {
 		httpStatus = status != null ? status : httpStatus;
 	}
-	
+
 	public void setStatus(int status) {
 		setStatus(HttpStatus.getByCode(status));
 	}
-	
+
 	public HttpResponseHeaders getHeaders() {
 		return headers;
 	}
-	
+
 	public void setHeaders(HttpHeaders headers) {
 		this.headers = new HttpResponseHeaders(headers);
 	}
-	
-	
-	
+
+
+
 	public void clearContent() {
 		content.reset();
 	}
-	
+
 	public int contentSize() {
 		return content.size();
 	}
-	
+
 	public void writeContent(int b) {
 		content.write(b);
 	}
-	
+
 	public void writeContent(byte[] buf) {
 		writeContent(buf, 0, buf.length);
 	}
-	
+
 	public void writeContent(byte[] buf, int off, int len) {
 		content.write(buf, off, len);
 	}
-	
+
 	public void writeString(String str, Charset ch) {
 		writeContent(str.getBytes(ch));
 	}
-	
+
 	public void writeFile(File file) throws IOException {
 		if (!file.exists()) return;
 		FileInputStream fis = new FileInputStream(file);
@@ -92,14 +92,14 @@ public class HttpResponse {
 		while ((read = fis.read()) != -1) writeContent(read);
 		fis.close();
 	}
-	
+
 	public void writeError(int error, boolean highend) throws IOException {
 		HttpStatus status = HttpStatus.getByCode(error);
 		StringBuilder sb = new StringBuilder();
 		BufferedReader br = new BufferedReader(new InputStreamReader(HttpResponse.class.getResourceAsStream("/resource/de/tassilo/html/" + (highend ? "high" : "low") +"end/error.html")));
 		String line;
 		while ((line = br.readLine()) != null) sb.append(line).append("\n");
-		
+
 		String str = sb.toString();
 		str = str.replace("{error_code}", Integer.toString(status.getCode()));
 		str = str.replace("{error_name}", status.getInfo());
@@ -111,9 +111,9 @@ public class HttpResponse {
 		clearContent();
 		writeString(str, StandardCharsets.UTF_8);
 	}
-	
+
 	public void outputContent(OutputStream out) throws IOException {
 		content.writeTo(out);
 	}
-	
+
 }

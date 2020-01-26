@@ -11,12 +11,12 @@ public abstract class Client {
 	public abstract int getUserID();
 	public abstract InetAddress getAddress();
 	public abstract int getPort();
-	
+
 	public abstract DataInputStream getInputStream();
 	public abstract DataOutputStream getOutputStream();
-	
+
 	public abstract void disconnect() throws IOException;
 	public abstract void terminate() throws IOException;
 	public abstract boolean isConnected();
-	
+
 }

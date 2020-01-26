@@ -1,11 +1,11 @@
 package de.tassilo.net.server.http;
 
 public enum HttpStatus {
-	
+
 	STATUS_100(100, "Continue", ""),
 	STATUS_101(101, "Switching Protocols", ""),
 	STATUS_102(102, "Processing", ""),
-	
+
 	STATUS_200(200, "OK", ""),
 	STATUS_201(201, "Created", ""),
 	STATUS_202(202, "Accepted", ""),
@@ -16,7 +16,7 @@ public enum HttpStatus {
 	STATUS_207(207, "Multi-Status", ""),
 	STATUS_208(208, "Already Reported", ""),
 	STATUS_226(226, "IM Used", ""),
-	
+
 	STATUS_300(300, "Multiple Choices", ""),
 	STATUS_301(301, "Moved Permanently", ""),
 	STATUS_302(302, "Found", ""),
@@ -25,7 +25,7 @@ public enum HttpStatus {
 	STATUS_305(305, "Use Proxy", ""),
 	STATUS_307(307, "Temporary Redirect", ""),
 	STATUS_308(308, "Permanent Redirect", ""),
-	
+
 	STATUS_400(400, "Bad Request", ""),
 	STATUS_401(401, "Unauthorized", ""),
 	STATUS_402(402, "Payment Required", ""),
@@ -56,7 +56,7 @@ public enum HttpStatus {
 	STATUS_444(444, "Connection Closed Without Response", ""),
 	STATUS_451(451, "Unavailable For Legal Reasons", ""),
 	STATUS_499(499, "Client Closed Request", ""),
-	
+
 	STATUS_500(500, "Internal Server Error", ""),
 	STATUS_501(501, "Not Implemented", ""),
 	STATUS_502(502, "Bad Gateway", ""),
@@ -69,42 +69,42 @@ public enum HttpStatus {
 	STATUS_510(510, "Not Extended", ""),
 	STATUS_511(511, "Network Authentication Required", ""),
 	STATUS_599(599, "Netword Connect Timeout Error", "");
-	
+
 	private final int code;
 	private final String info;
 	private final String description;
-	
+
 	private HttpStatus(int code, String info, String description) {
 		this.code = code;
 		this.info = info;
 		this.description = description;
 	}
-	
+
 	public int getCode() {
 		return code;
 	}
-	
+
 	public String getInfo() {
 		return info;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getCode() + " " + getInfo();
 	}
-	
+
 	public static HttpStatus parse(String str) {
 		for (HttpStatus e : values()) if (e.toString().equals(str)) return e;
 		return null;
 	}
-	
+
 	public static HttpStatus getByCode(int status) {
 		for (HttpStatus e : values()) if (e.getCode() == status) return e;
 		return null;
 	}
-	
+
 }

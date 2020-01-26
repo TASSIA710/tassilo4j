@@ -11,33 +11,33 @@ public class HttpException extends Exception {
 	public static final int ERROR_CODE_UNSUPPORTED_HTTP_VERSION	= 0x07;
 	private static final long serialVersionUID = -5758446679928885510L;
 	private final int errorCode;
-	
-	
-	
+
+
+
 	public HttpException(int errorCode) {
 		super();
 		this.errorCode = errorCode;
 	}
-	
+
 	public HttpException(int errorCode, String message) {
 		super(message);
 		this.errorCode = errorCode;
 	}
-	
+
 	public HttpException(int errorCode, Throwable cause) {
 		super(cause);
 		this.errorCode = errorCode;
 	}
-	
+
 	public HttpException(int errorCode, String message, Throwable cause) {
 		super(message, cause);
 		this.errorCode = errorCode;
 	}
-	
-	
-	
+
+
+
 	public int getErrorCode() {
 		return errorCode;
 	}
-	
+
 }
