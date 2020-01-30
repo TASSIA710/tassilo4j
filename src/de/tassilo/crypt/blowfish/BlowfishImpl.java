@@ -29,13 +29,13 @@ public class BlowfishImpl implements Blowfish {
 		}
 		long[] lr = new long[2];
 		for (int i = 0; i < 18; i += 2) {
-			encrypt64bit(lr);
+			encrypt2l(lr);
 			p[i] = lr[0];
 			p[i+1] = lr[1];
 		}
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 256; j += 2) {
-				encrypt64bit(lr);
+				encrypt2l(lr);
 				s[i][j] = lr[0];
 				s[i][j+1] = lr[1];
 			}
@@ -44,6 +44,8 @@ public class BlowfishImpl implements Blowfish {
 	/* Constructor */
 
 
+	
+	
 
 	/* Utility */
 	protected long f(long x) {
@@ -59,9 +61,11 @@ public class BlowfishImpl implements Blowfish {
 	/* Utility */
 
 
+	
+	
 
 	/* Encrypt */
-	public void encrypt64bit(long[] lr) {
+	protected void encrypt2l(long[] lr) {
 		for (int i = 0; i < 16; i += 2) {
 			lr[0] = (lr[0] ^ p[i]) & m;
 			lr[1] = (lr[1] ^ f(lr[0])) & m;
@@ -73,33 +77,27 @@ public class BlowfishImpl implements Blowfish {
 		swap(lr);
 	}
 
-	public void encrypt64bit(byte[] bytes) {
-		long[] x = new long[2];
-		x[0] = BytesToUInt(bytes[0], bytes[1], bytes[2], bytes[3]);
-		x[1] = BytesToUInt(bytes[4], bytes[5], bytes[6], bytes[7]);
-		encrypt64bit(x);
-		byte[] d = UIntToBytes(x[0]);
-		bytes[0] = d[0];
-		bytes[1] = d[1];
-		bytes[2] = d[2];
-		bytes[3] = d[3];
-		d = UIntToBytes(x[1]);
-		bytes[4] = d[0];
-		bytes[5] = d[1];
-		bytes[6] = d[2];
-		bytes[7] = d[3];
+	protected byte[] encrypt8b(byte[] bytes) {
+		long[] x = btl(bytes);
+		encrypt2l(x);
+		return ltb(x);
 	}
 
 	@Override
 	public byte[] encrypt(byte[] data) {
-		return null;
+		byte[][] x = split(data);
+		for (int i = 0; i < x.length; i++)
+			x[i] = encrypt8b(x[i]);
+		return join(x);
 	}
 	/* Encrypt */
 
 
+	
+	
 
 	/* Decrypt */
-	public void decrypt64bit(long[] lr) {
+	protected void decrypt2l(long[] lr) {
 		for (int i = 16; i > 0; i -= 2) {
 			lr[0] = (lr[0] ^ p[i+1]) & m;
 			lr[1] = (lr[1] ^ f(lr[0])) & m;
@@ -111,48 +109,72 @@ public class BlowfishImpl implements Blowfish {
 		swap(lr);
 	}
 
-	public void decrypt64bit(byte[] bytes) {
-		long[] x = new long[2];
-		x[0] = BytesToUInt(bytes[0], bytes[1], bytes[2], bytes[3]);
-		x[1] = BytesToUInt(bytes[4], bytes[5], bytes[6], bytes[7]);
-		decrypt64bit(x);
-		byte[] d = UIntToBytes(x[0]);
-		bytes[0] = d[0];
-		bytes[1] = d[1];
-		bytes[2] = d[2];
-		bytes[3] = d[3];
-		d = UIntToBytes(x[1]);
-		bytes[4] = d[0];
-		bytes[5] = d[1];
-		bytes[6] = d[2];
-		bytes[7] = d[3];
+	protected byte[] decrypt8b(byte[] bytes) {
+		long[] x = btl(bytes);
+		decrypt2l(x);
+		return ltb(x);
 	}
 
 	@Override
 	public byte[] decrypt(byte[] data) {
-		return null;
+		byte[][] x = split(data);
+		for (int i = 0; i < x.length; i++)
+			x[i] = decrypt8b(x[i]);
+		return join(x);
 	}
 	/* Decrypt */
 
 
+	
+	
 
 	/* Conversion */
-	private static final long btl(byte x) {
-		return ((long)x) & 0x00000000000000FFL;
+	protected long[] btl(byte[] x) {
+		long[] y = new long[2];
+		y[0] = (Byte.toUnsignedLong(x[0]) & 0xffL) << 24
+				| (Byte.toUnsignedLong(x[1]) & 0xffL) << 16
+				| (Byte.toUnsignedLong(x[2]) & 0xffL) << 8
+				| (Byte.toUnsignedLong(x[3]) & 0xffL);
+		y[1] = (Byte.toUnsignedLong(x[4]) & 0xffL) << 24
+				| (Byte.toUnsignedLong(x[5]) & 0xffL) << 16
+				| (Byte.toUnsignedLong(x[6]) & 0xffL) << 8
+				| (Byte.toUnsignedLong(x[7]) & 0xffL);
+		return y;
 	}
-
-	protected long BytesToUInt(byte b0, byte b1, byte b2, byte b3) {
-		return btl(b0) | (btl(b1) << 8) | (btl(b2) << 16) | (btl(b3) << 24);
+	
+	protected byte[] ltb(long[] x) {
+		byte[] y = new byte[8];
+		y[0] = (byte) ((x[0] >> 24) & 0xffL);
+		y[1] = (byte) ((x[0] >> 16) & 0xffL);
+		y[2] = (byte) ((x[0] >> 8) & 0xffL);
+		y[3] = (byte) (x[0] & 0xffL);
+		y[4] = (byte) ((x[1] >> 24) & 0xffL);
+		y[5] = (byte) ((x[1] >> 16) & 0xffL);
+		y[6] = (byte) ((x[1] >> 8) & 0xffL);
+		y[7] = (byte) (x[1] & 0xffL);
+		return y;
 	}
-
-	protected byte[] UIntToBytes(long uint) {
-		byte[] data = new byte[4];
-	    data[3] = (byte) uint;
-	    data[2] = (byte) (uint >>> 8);
-	    data[1] = (byte) (uint >>> 16);
-	    data[0] = (byte) (uint >>> 32);
-		return data;
+	
+	protected byte[][] split(byte[] x) {
+		byte[][] y = new byte[(int) Math.ceil((double)x.length / (double)8)][8];
+		for (int i = 0; i < x.length; i++)
+			y[Math.floorDiv(i, 8)][i % 8] = x[i];
+		return y;
+	}
+	
+	protected byte[] join(byte[][] x) {
+		int cutOff = 0;
+		for (int i = 0; i < 8; i++) {
+			if (x[x.length - 1][i] == 0) {
+				cutOff = 8 - i;
+				break;
+			}
+		}
+		byte[] y = new byte[(x.length * 8) - cutOff];
+		for (int i = 0; i < y.length; i++)
+			y[i] = x[Math.floorDiv(i, 8)][i % 8];
+		return y;
 	}
 	/* Conversion */
-
+	
 }
