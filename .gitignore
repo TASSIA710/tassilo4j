@@ -2,4 +2,4 @@
 /.settings/
 .classpath
 .project
-src/de/tassilo/Tester.java
+Tester.java
