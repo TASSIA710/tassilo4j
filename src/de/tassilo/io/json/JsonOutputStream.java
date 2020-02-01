@@ -28,7 +28,7 @@ public class JsonOutputStream extends OutputStream {
 		dest.close();
 	}
 
-	public void writeObject(JsonObject object, boolean compact) throws IOException {
+	public void writeJsonObject(JsonObject object, boolean compact) throws IOException {
 		jsonWriter.writeJsonObject(object, compact);
 	}
 
