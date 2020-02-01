@@ -16,6 +16,6 @@ Features
 
 **Planned/Upcoming features:**
 - Networking library (ClientSide)
-- HTTP**S** Server
+- HTTPS Server (adding SSL, improving performance) ([view branch](https://github.com/TASSIA710/tassilo4j/tree/https))
 - Blowfish & BCrypt ([view branch](https://github.com/TASSIA710/tassilo4j/tree/blowfish))
 - Byte array to hex/Base64 and vice-versa
