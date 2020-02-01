@@ -67,7 +67,7 @@ public class HttpStaticRequestListener implements HttpRequestListener {
 					JsonReader reader = new JsonReader(new FileReader(meta));
 					JsonObject json;
 					try {
-						json = reader.readObject();
+						json = reader.readJsonObject();
 					} catch (ParseException ex) {
 						server.getLogger().severe("File " + meta.getPath() + " could not be parsed.");
 						reader.close();
@@ -100,7 +100,7 @@ public class HttpStaticRequestListener implements HttpRequestListener {
 					JsonReader reader = new JsonReader(new FileReader(meta));
 					JsonObject json;
 					try {
-						json = reader.readObject();
+						json = reader.readJsonObject();
 					} catch (ParseException ex) {
 						server.getLogger().severe("File " + meta.getPath() + " could not be parsed.");
 						reader.close();

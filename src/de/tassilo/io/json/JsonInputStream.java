@@ -24,8 +24,8 @@ public class JsonInputStream extends InputStream {
 		src.close();
 	}
 
-	public JsonObject readObject() throws ParseException, IOException {
-		return jsonReader.readObject();
+	public JsonObject readJsonObject() throws ParseException, IOException {
+		return jsonReader.readJsonObject();
 	}
 
 }
