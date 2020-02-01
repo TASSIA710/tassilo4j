@@ -8,7 +8,7 @@ Features
 
 **Currently supported features:**
 - Networking library (ServerSide)
-- HTTP Server (no SSL)
+- Simple HTTP Server (no SSL)
 - JSON parsing and generating
 - Math Expression parser
 - Array utilities
@@ -17,5 +17,5 @@ Features
 **Planned/Upcoming features:**
 - Networking library (ClientSide)
 - HTTP**S** Server
-- Blowfish & BCrypt
+- Blowfish & BCrypt ([view branch](https://github.com/TASSIA710/tassilo4j/tree/blowfish))
 - Byte array to hex/Base64 and vice-versa
