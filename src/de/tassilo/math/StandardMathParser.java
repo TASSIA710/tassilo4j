@@ -66,7 +66,7 @@ class StandardMathParser extends MathParser {
 			if (func.equals("sqrt")) x = StrictMath.sqrt(x);
 			else if (func.equals("sin")) x = StrictMath.sin(x);
 			else if (func.equals("cos")) x = StrictMath.cos(x);
-			else if (func.equals("tab")) x = StrictMath.tan(x);
+			else if (func.equals("tan")) x = StrictMath.tan(x);
 			else throw new RuntimeException("Unknown function: " + func);
 		} else {
 			throw new RuntimeException("Unexpected: " + (char)ch);
