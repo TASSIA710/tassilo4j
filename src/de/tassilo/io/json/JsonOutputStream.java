@@ -29,7 +29,7 @@ public class JsonOutputStream extends OutputStream {
 	}
 
 	public void writeObject(JsonObject object, boolean compact) throws IOException {
-		jsonWriter.writeObject(object, compact);
+		jsonWriter.writeJsonObject(object, compact);
 	}
 
 }

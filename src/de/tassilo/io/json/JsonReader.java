@@ -36,14 +36,14 @@ public class JsonReader extends Reader {
 		return false;
 	}
 
-	public JsonObject readObject() throws ParseException, IOException {
+	public JsonObject readJsonObject() throws ParseException, IOException {
 		if (!eat('{')) throw new ParseException("expected '{', got " + new String(Character.toChars(nextChar)), position);
 		JsonObject obj = new JsonObject();
 
 		while (true) {
-			String key = readString();
+			String key = readJsonString();
 			if (!eat(':')) throw new ParseException("expected ':'", position);
-			JsonValue value = readValue();
+			JsonValue value = readJsonValue();
 			obj.setValue(key, value);
 			if (eat('}')) break;
 			if (!eat(',')) throw new ParseException("expected ','", position);
@@ -52,25 +52,25 @@ public class JsonReader extends Reader {
 		return obj;
 	}
 
-	private JsonValue readValue() throws IOException, ParseException {
+	private JsonValue readJsonValue() throws IOException, ParseException {
 		if (checkNext('"')) {
-			return JsonValue.getStringValue(readString());
+			return JsonValue.getStringValue(readJsonString());
 		} else if (checkNext('[')) {
-			return readArray();
+			return readJsonArray();
 		} else if (checkNext('{')) {
-			return readObject();
+			return readJsonObject();
 		} else {
-			return readStatic();
+			return readJsonStatic();
 		}
 	}
 
-	private JsonValue readArray() throws ParseException, IOException {
+	private JsonValue readJsonArray() throws ParseException, IOException {
 		if (!eat('[')) throw new ParseException("expected '['", position);
 		if (eat(']')) return JsonValue.getArrayValue();
 
 		List<JsonValue> values = new ArrayList<JsonValue>();
 		while (true) {
-			values.add(readValue());
+			values.add(readJsonValue());
 			if (eat(']')) break;
 			if (!eat(',')) throw new ParseException("expected ','", position);
 		}
@@ -80,7 +80,7 @@ public class JsonReader extends Reader {
 		return JsonValue.getArrayValue(array);
 	}
 
-	private JsonValue readStatic() throws IOException, ParseException {
+	private JsonValue readJsonStatic() throws IOException, ParseException {
 		StringBuilder sb = new StringBuilder();
 
 		while (true) {
@@ -113,7 +113,7 @@ public class JsonReader extends Reader {
 
 	}
 
-	private String readString() throws ParseException, IOException {
+	private String readJsonString() throws ParseException, IOException {
 		if (!eat('"')) throw new ParseException("expected '\"'", position);
 		StringBuilder sb = new StringBuilder();
 

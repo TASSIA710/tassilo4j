@@ -19,11 +19,11 @@ public class JsonWriter extends Writer {
 
 
 
-	public void writeObject(JsonObject object, boolean compact) throws IOException {
-		if (compact) writeObjectCompact(object); else writeObject(object);
+	public void writeJsonObject(JsonObject object, boolean compact) throws IOException {
+		if (compact) writeJsonObjectCompact(object); else writeJsonObject(object);
 	}
 
-	private void writeObject(JsonObject object) throws IOException {
+	private void writeJsonObject(JsonObject object) throws IOException {
 		writeDeepness();
 		write('{');
 		deep++;
@@ -36,9 +36,9 @@ public class JsonWriter extends Writer {
 			write('\n');
 			writeDeepness();
 
-			writeString(e.getKey());
+			writeJsonString(e.getKey());
 			write(e.getValue().isObject() ? ":\n" : ": ");
-			writeValue(e.getValue(), false);
+			writeJsonValue(e.getValue(), false);
 		}
 
 		write('\n');
@@ -47,22 +47,22 @@ public class JsonWriter extends Writer {
 		write('}');
 	}
 
-	private void writeObjectCompact(JsonObject object) throws IOException {
+	private void writeJsonObjectCompact(JsonObject object) throws IOException {
 		write('{');
 		boolean first = true;
 		for (Entry<String, JsonValue> e : object.getValues().entrySet()) {
 			if (!first) write(',');
 			first = false;
-			writeString(e.getKey());
+			writeJsonString(e.getKey());
 			write(':');
-			writeValue(e.getValue(), true);
+			writeJsonValue(e.getValue(), true);
 		}
 		write('}');
 	}
 
 
 
-	private void writeArray(JsonValue value) throws IOException {
+	private void writeJsonArray(JsonValue value) throws IOException {
 		if (!value.isArray()) return;
 		JsonValue[] array = value.getArray();
 
@@ -78,7 +78,7 @@ public class JsonWriter extends Writer {
 			write("[ ");
 			for (int i = 0; i < array.length; i++) {
 				if (i != 0) write(", ");
-				writeValue(array[i], false);
+				writeJsonValue(array[i], false);
 			}
 			write(" ]");
 			return;
@@ -92,7 +92,7 @@ public class JsonWriter extends Writer {
 		for (int i = 0; i < array.length; i++) {
 			if (i != 0) write(",\n");
 			writeDeepness();
-			writeValue(array[i], false);
+			writeJsonValue(array[i], false);
 		}
 
 		write('\n');
@@ -101,34 +101,34 @@ public class JsonWriter extends Writer {
 		write("]");
 	}
 
-	private void writeArrayCompact(JsonValue value) throws IOException {
+	private void writeJsonArrayCompact(JsonValue value) throws IOException {
 		if (!value.isArray()) return;
 		JsonValue[] array = value.getArray();
 		write('[');
 		for (int i = 0; i < array.length; i++) {
 			if (i != 0) write(',');
-			writeValue(array[i], true);
+			writeJsonValue(array[i], true);
 		}
 		write(']');
 	}
 
 
 
-	private void writeValue(JsonValue value, boolean compact) throws IOException {
+	private void writeJsonValue(JsonValue value, boolean compact) throws IOException {
 		if (value.isObject()) {
-			if (compact) writeObjectCompact(value.getObject());
-			else writeObject(value.getObject());
+			if (compact) writeJsonObjectCompact(value.getObject());
+			else writeJsonObject(value.getObject());
 		} else if (value.isArray()) {
-			if (compact) writeArrayCompact(value);
-			else writeArray(value);
+			if (compact) writeJsonArrayCompact(value);
+			else writeJsonArray(value);
 		} else if (value.isString()) {
-			writeString(value.getString());
+			writeJsonString(value.getString());
 		} else {
-			writeStatic(value);
+			writeJsonStatic(value);
 		}
 	}
 
-	private void writeStatic(JsonValue value) throws IOException {
+	private void writeJsonStatic(JsonValue value) throws IOException {
 		if (value.isNull()) {
 			write("null");
 		} else if (value.isBoolean()) {
@@ -138,7 +138,7 @@ public class JsonWriter extends Writer {
 		} else; // else should never happen?
 	}
 
-	private void writeString(String str) throws IOException {
+	private void writeJsonString(String str) throws IOException {
 		str = str.replace("\b", "\\b");
 		str = str.replace("\f", "\\b");
 		str = str.replace("\n", "\\b");
