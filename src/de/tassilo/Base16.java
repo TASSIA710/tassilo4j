@@ -10,12 +10,28 @@ import java.nio.charset.StandardCharsets;
  */
 public final class Base16 {
 
-	private static final char[] TABLE = "0123456789ABCDEF".toCharArray();
-
 	/* Private Constructor */
 	private Base16() {
 	}
 	/* Private Constructor */
+
+
+
+
+
+	/* Generic */
+	public static final char[] getUppercaseTable() {
+		return "0123456789ABCDEF".toCharArray();
+	}
+
+	public static final char[] getLowercaseTable() {
+		return "0123456789abcdef".toCharArray();
+	}
+
+	public static final char[] getDefaultTable() {
+		return getUppercaseTable();
+	}
+	/* Generic */
 
 
 
@@ -32,21 +48,22 @@ public final class Base16 {
 
 	public static final String encode(byte[] data) {
 		StringBuilder sb = new StringBuilder((int)Math.ceil(data.length / 3) * 4);
-		encode(sb, data);
+		char[] table = getDefaultTable();
+		encode(sb, data, table);
 		return sb.toString();
 	}
 
-	private static final void encode(StringBuilder sb, byte[] data) {
+	private static final void encode(StringBuilder sb, byte[] data, char[] table) {
 		for (int i = 0; i < data.length; i++) {
-			encodeElement(sb, ((int) data[i]) & 0xff);
+			encodeElement(sb, ((int) data[i]) & 0xff, table);
 		}
 	}
 
-	private static final void encodeElement(StringBuilder sb, int x) {
+	private static final void encodeElement(StringBuilder sb, int x, char[] table) {
 		final int M = 0b00000000000000000000000000001111;
 		int a = (x >> 4) & M;
 		int b = x & M;
-		sb.append(TABLE[a]).append(TABLE[b]);
+		sb.append(table[a]).append(table[b]);
 	}
 	/* Encoding */
 
@@ -64,23 +81,24 @@ public final class Base16 {
 	}
 
 	public static final byte[] decode(String str) throws IllegalArgumentException {
+		char[] table = getDefaultTable();
 		while (str.length() % 2 != 0) throw new IllegalArgumentException("string length is not a multiple of two");
 		byte[] data = new byte[str.length() / 2];
 		char[] chars = str.toCharArray();
 		for (int i = 0; i < chars.length/2; i++) {
-			decodeElement(data, i, chars[i*2], chars[i*2+1]);
+			decodeElement(data, i, chars[i*2], chars[i*2+1], table);
 		}
 		return data;
 	}
 
-	private static final void decodeElement(byte[] buffer, int offset, char a, char b) throws IllegalArgumentException {
-		byte A = decodeCharacter(a);
-		byte B = decodeCharacter(b);
+	private static final void decodeElement(byte[] buffer, int offset, char a, char b, char[] table) throws IllegalArgumentException {
+		byte A = decodeCharacter(a, table);
+		byte B = decodeCharacter(b, table);
 		buffer[offset] = (byte) ((A << 4 & 0b11110000) | (B & 0b00001111));
 	}
 
-	private static final byte decodeCharacter(char x) throws IllegalArgumentException {
-		byte b = (byte) new String(TABLE).indexOf(x);
+	private static final byte decodeCharacter(char x, char[] table) throws IllegalArgumentException {
+		byte b = (byte) new String(table).indexOf(x);
 		if (b == -1) throw new IllegalArgumentException("'" + x + "' is not a valid Base16 character");
 		return b;
 	}
