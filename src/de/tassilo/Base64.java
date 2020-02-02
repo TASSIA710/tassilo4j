@@ -17,11 +17,11 @@ public final class Base64 {
 	private Base64() {
 	}
 	/* Private Constructor */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* Generic */
 	/**
 	 * Returns the default translation table for Base64.
@@ -73,6 +73,7 @@ public final class Base64 {
 	 * Encodes the given byte array and builds the string using the StringBuilder.
 	 * @param sb the StringBuilder to use
 	 * @param data the bytes to encode
+	 * @param table the translation table to use
 	 */
 	private static final void encode(StringBuilder sb, byte[] data, char[] table) {
 		for (int i = 0; i < data.length; i += 3) {
@@ -91,6 +92,7 @@ public final class Base64 {
 	 * @param a the first byte (as int)
 	 * @param b the second byte (as int)
 	 * @param c the third byte (as int)
+	 * @param table the translation table to use
 	 */
 	private static final void encodeElement(StringBuilder sb, int a, int b, int c, char[] table) {
 		final int M = 0b00000000000000000000000000111111;
@@ -156,6 +158,8 @@ public final class Base64 {
 	 * @param b the second char
 	 * @param c the third char
 	 * @param d the fourth char
+	 * @param table the translation table to use
+	 * @return the new offset
 	 * @throws IllegalArgumentException if one of the characters is not a Base64 character
 	 */
 	private static final int decodeElement(byte[] buffer, int offset, char a, char b, char c, char d, char[] table) throws IllegalArgumentException {
@@ -172,6 +176,7 @@ public final class Base64 {
 	/**
 	 * Decodes a single character to its representative byte (only the last 6 bits are relevant!)
 	 * @param x the character to decode
+	 * @param table the translation table to use
 	 * @return the representative byte
 	 * @throws IllegalArgumentException if the given character is not a Base64 character
 	 */
