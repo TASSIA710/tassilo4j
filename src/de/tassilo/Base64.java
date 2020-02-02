@@ -127,6 +127,18 @@ public final class Base64 {
 	 * @throws IllegalArgumentException if the string contains non-Base64 characters
 	 */
 	public static final String decodeToString(String str, Charset ch) throws IllegalArgumentException {
+		if (str.indexOf('\n') != -1) {
+			String[] splits = str.split("\n");
+			for (int i = 0; i < splits.length; i++)
+				splits[i] = decodeToString(splits[i], ch);
+			return String.join("\n", splits);
+		}
+		if (str.indexOf('\r') != -1) {
+			String[] splits = str.split("\r");
+			for (int i = 0; i < splits.length; i++)
+				splits[i] = decodeToString(splits[i], ch);
+			return String.join("\r", splits);
+		}
 		return new String(decode(str), ch);
 	}
 
@@ -181,7 +193,7 @@ public final class Base64 {
 	 * @throws IllegalArgumentException if the given character is not a Base64 character
 	 */
 	private static final byte decodeCharacter(char x, char[] table) throws IllegalArgumentException {
-		byte b = (byte) new String(table).indexOf(x);
+		byte b = x == '=' ? 0 : (byte) new String(table).indexOf(x);
 		if (b == -1) throw new IllegalArgumentException("'" + x + "' is not a valid Base64 character");
 		return b;
 	}
