@@ -101,7 +101,7 @@ public final class Base64 {
 	 *  Decodes the given Base64 and converts the bytes into a new string using the UTF-8 charset.
 	 * @param str the string to decode
 	 * @return the decoded string
-	 * @throws IllegalArgumentException if the string is not a multiple of 4, or contains non-Base64 characters
+	 * @throws IllegalArgumentException if the string contains non-Base64 characters
 	 */
 	public static final String decodeToString(String str) throws IllegalArgumentException {
 		return decodeToString(str, StandardCharsets.UTF_8);
@@ -112,7 +112,7 @@ public final class Base64 {
 	 * @param str the string to decode
 	 * @param ch the charset to use to create the new string
 	 * @return the decoded string
-	 * @throws IllegalArgumentException if the string is not a multiple of 4, or contains non-Base64 characters
+	 * @throws IllegalArgumentException if the string contains non-Base64 characters
 	 */
 	public static final String decodeToString(String str, Charset ch) throws IllegalArgumentException {
 		return new String(decode(str), ch);
@@ -122,16 +122,19 @@ public final class Base64 {
 	 * Decodes the given Base64 string into its raw bytes.
 	 * @param str the string to decode
 	 * @return the raw byte data
-	 * @throws IllegalArgumentException if the string is not a multiple of 4, or contains non-Base64 characters
+	 * @throws IllegalArgumentException if the string contains non-Base64 characters
 	 */
 	public static final byte[] decode(String str) throws IllegalArgumentException {
-		if (str.length() % 4 != 0) throw new IllegalArgumentException("not a base64 string (length mod 4 != 0)");
+		while (str.length() % 4 != 0) str = str + "=";
 		byte[] data = new byte[(str.length() / 4) * 3];
 		char[] chars = str.toCharArray();
+		int offset = 0;
 		for (int i = 0; i < chars.length/4; i++) {
-			decodeElement(data, i*3, chars[i*4], chars[i*4+1], chars[i*4+2], chars[i*4+3]);
+			offset = decodeElement(data, offset, chars[i*4], chars[i*4+1], chars[i*4+2], chars[i*4+3]);
 		}
-		return data;
+		byte[] data2 = new byte[offset];
+		System.arraycopy(data, 0, data2, 0, data2.length);
+		return data2;
 	}
 
 	/**
@@ -144,14 +147,15 @@ public final class Base64 {
 	 * @param d the fourth char
 	 * @throws IllegalArgumentException if one of the characters is not a Base64 character
 	 */
-	private static final void decodeElement(byte[] buffer, int offset, char a, char b, char c, char d) throws IllegalArgumentException {
+	private static final int decodeElement(byte[] buffer, int offset, char a, char b, char c, char d) throws IllegalArgumentException {
 		byte A = decodeCharacter(a);
 		byte B = decodeCharacter(b);
 		byte C = decodeCharacter(c);
 		byte D = decodeCharacter(d);
-		buffer[offset+0] = (byte) ((A << 2 & 0b11111100) | (B >> 4 & 0b00000011));
-		buffer[offset+1] = (byte) ((B << 4 & 0b11110000) | (C >> 2 & 0b00001111));
-		buffer[offset+2] = (byte) ((C << 6 & 0b11000000) | (D & 0b00111111));
+		if (a != '=' && b != '=') buffer[offset++] = (byte) ((A << 2 & 0b11111100) | (B >> 4 & 0b00000011));
+		if (b != '=' && c != '=') buffer[offset++] = (byte) ((B << 4 & 0b11110000) | (C >> 2 & 0b00001111));
+		if (c != '=' && d != '=') buffer[offset++] = (byte) ((C << 6 & 0b11000000) | (D & 0b00111111));
+		return offset;
 	}
 
 	/**
@@ -161,74 +165,9 @@ public final class Base64 {
 	 * @throws IllegalArgumentException if the given character is not a Base64 character
 	 */
 	private static final byte decodeCharacter(char x) throws IllegalArgumentException {
-		switch (x) {
-			case 'A': return 0;
-			case 'B': return 1;
-			case 'C': return 2;
-			case 'D': return 3;
-			case 'E': return 4;
-			case 'F': return 5;
-			case 'G': return 6;
-			case 'H': return 7;
-			case 'I': return 8;
-			case 'J': return 9;
-			case 'K': return 10;
-			case 'L': return 11;
-			case 'M': return 12;
-			case 'N': return 13;
-			case 'O': return 14;
-			case 'P': return 15;
-			case 'Q': return 16;
-			case 'R': return 17;
-			case 'S': return 18;
-			case 'T': return 19;
-			case 'U': return 20;
-			case 'V': return 21;
-			case 'W': return 22;
-			case 'X': return 23;
-			case 'Y': return 24;
-			case 'Z': return 25;
-			case 'a': return 26;
-			case 'b': return 27;
-			case 'c': return 28;
-			case 'd': return 29;
-			case 'e': return 30;
-			case 'f': return 31;
-			case 'g': return 32;
-			case 'h': return 33;
-			case 'i': return 34;
-			case 'j': return 35;
-			case 'k': return 36;
-			case 'l': return 37;
-			case 'm': return 38;
-			case 'n': return 39;
-			case 'o': return 40;
-			case 'p': return 41;
-			case 'q': return 42;
-			case 'r': return 43;
-			case 's': return 44;
-			case 't': return 45;
-			case 'u': return 46;
-			case 'v': return 47;
-			case 'w': return 48;
-			case 'x': return 49;
-			case 'y': return 50;
-			case 'z': return 51;
-			case '0': return 52;
-			case '1': return 53;
-			case '2': return 54;
-			case '3': return 55;
-			case '4': return 56;
-			case '5': return 57;
-			case '6': return 58;
-			case '7': return 59;
-			case '8': return 60;
-			case '9': return 61;
-			case '+': return 62;
-			case '/': return 63;
-			case '=': return 0;
-			default: throw new IllegalArgumentException("not a base64 string (invalid character: '" + x + "'");
-		}
+		byte b = (byte) new String(TABLE).indexOf(x);
+		if (b == -1) throw new IllegalArgumentException("'" + x + "' is not a valid Base64 character");
+		return b;
 	}
 	/* Decoding */
 
