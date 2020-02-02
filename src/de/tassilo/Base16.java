@@ -119,7 +119,7 @@ public final class Base16 {
 
 	/* Decoding */
 	/**
-	 *  Decodes the given Base64 and converts the bytes into a new string using the UTF-8 charset.
+	 *  Decodes the given Base16 and converts the bytes into a new string using the UTF-8 charset.
 	 * @param str the string to decode
 	 * @return the decoded string
 	 * @throws IllegalArgumentException if the string contains non-Base16 characters
@@ -129,7 +129,7 @@ public final class Base16 {
 	}
 
 	/**
-	 * Decodes the given Base64 and converts the bytes into a new string using the given charset.
+	 * Decodes the given Base16 and converts the bytes into a new string using the given charset.
 	 * @param str the string to decode
 	 * @param ch the charset to use to create the new string
 	 * @return the decoded string
