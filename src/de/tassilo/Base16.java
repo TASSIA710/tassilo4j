@@ -146,6 +146,7 @@ public final class Base16 {
 	 * @throws IllegalArgumentException if the string contains non-Base16 characters
 	 */
 	public static final byte[] decode(String str) throws IllegalArgumentException {
+		str = str.toUpperCase().replaceAll("[^0-9A-F]", "");
 		char[] table = getDefaultTable();
 		while (str.length() % 2 != 0) throw new IllegalArgumentException("string length is not a multiple of two");
 		byte[] data = new byte[str.length() / 2];
