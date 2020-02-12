@@ -1,7 +1,9 @@
-# Tassilo4J (BETA)
+# Tassilo4J (BETA)\*
 Simple Java library offering some useful functions.
 Please note that this project is currently in it's early beta stage, bugs may occur.
 Feel free to contribute though! :smile:
+
+\*Educational project
 
 Features
 -
@@ -10,6 +12,7 @@ Features
 - Networking library (ServerSide)
 - Simple HTTP Server (no SSL)
 - [JSON parsing and generating](https://github.com/TASSIA710/tassilo4j/wiki/JSON)
+- [Base64](https://github.com/TASSIA710/Tassilo4J/wiki/Base64) and Base16
 - Math Expression parser
 - Array utilities
 - Iterator utilities
