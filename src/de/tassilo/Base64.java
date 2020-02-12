@@ -127,7 +127,7 @@ public final class Base64 {
 	 * @throws IllegalArgumentException if the string contains non-Base64 characters
 	 */
 	public static final String decodeToString(String str, Charset ch) throws IllegalArgumentException {
-		return new String(decode(str.replaceAll("[^A-Za-z0-9+/=]", "")), ch);
+		return new String(decode(str), ch);
 	}
 
 	/**
@@ -137,6 +137,7 @@ public final class Base64 {
 	 * @throws IllegalArgumentException if the string contains non-Base64 characters
 	 */
 	public static final byte[] decode(String str) throws IllegalArgumentException {
+		str = str.replaceAll("[^A-Za-z0-9+/=]", "");
 		char[] table = getDefaultTable();
 		while (str.length() % 4 != 0) str = str + "=";
 		byte[] data = new byte[(str.length() / 4) * 3];
