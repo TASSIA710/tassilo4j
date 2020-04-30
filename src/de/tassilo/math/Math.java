@@ -1,5 +1,7 @@
 package de.tassilo.math;
 
+import java.util.function.Consumer;
+
 public class Math {
 
 	private Math() {
@@ -66,5 +68,56 @@ public class Math {
 		}
 	}
 	/* Single Parsing */
+	
+	
+	
+	/* Fibonacci */
+	protected static void _fibonacci(int index, long buffer[], int a, int b) {
+		buffer[index] = b;
+		index++;
+		if (index >= buffer.length) return;
+		_fibonacci(index, buffer, b, a + b);
+	}
+	
+	public static long[] fibonacci(int length) {
+		long[] buffer = new long[length];
+		_fibonacci(0, buffer, 0, 1);
+		return buffer;
+	}
+	/* Fibonacci */
+	
+	
+
+	/* Collatz Conjecture */
+	public static long collatzConjectureOptimised(long start) {
+		if (start == 0) return 0;
+		if (start == 1) return 1;
+		if (start % 2 == 0) return collatzConjectureOptimised(start / 2);
+		else return collatzConjectureOptimised((start * 3 + 1) / 2);
+	}
+	
+	public static long collatzConjecture(long start) {
+		return collatzConjecture(start, (e) -> {});
+	}
+	
+	public static long collatzConjecture(long start, Consumer<Long> callbacks) {
+		callbacks.accept(start);
+		
+		if (start == 0) {
+			// If we reach 0 (which should basically be impossible, unless we start at it
+			// we also end up in an infinite loop as we are stuck in zero (0 / 2 = 0)
+			return 0;
+		}
+		
+		if (start == 1) {
+			// If we reach 1, we can just assume that we would end in a loop:
+			// 1 goes to 4, which will then go back to 1
+			return 1;
+		}
+		
+		if (start % 2 == 0) return collatzConjecture(start / 2, callbacks);
+		else return collatzConjecture(start * 3 + 1, callbacks);
+	}
+	/* Collatz Conjecture */
 
 }
