@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
  * @author Tassilo
  * @since Tassilo4J 2.0
  */
-public final class Base64 {
+public class Base64 {
 
 	/* Private Constructor */
 	/**
