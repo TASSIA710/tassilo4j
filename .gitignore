@@ -1,7 +1,12 @@
 /bin/
+/target/
+
 /.settings/
 /.idea/
+
 /.classpath
 /.project
+
 /Tassilo4J.iml
+
 Tester.java
