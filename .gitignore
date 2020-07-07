@@ -1,5 +1,7 @@
 /bin/
 /.settings/
-.classpath
-.project
+/.idea/
+/.classpath
+/.project
+/Tassilo4J.iml
 Tester.java
