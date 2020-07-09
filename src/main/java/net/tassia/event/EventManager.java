@@ -13,7 +13,12 @@ public class EventManager {
 
 
 	protected <T extends Event> EventHandler<T> getHandler(Class<T> eventClass) {
-		return (EventHandler<T>) handlers.get(eventClass.getName());
+		EventHandler<T> handler = (EventHandler<T>) handlers.get(eventClass.getName());
+		if (handler == null) {
+			handler = new EventHandler<T>();
+			setHandler(eventClass, handler);
+		}
+		return handler;
 	}
 
 	protected <T extends Event> void setHandler(Class<T> eventClass, EventHandler<T> handler) {
@@ -21,10 +26,6 @@ public class EventManager {
 	}
 
 
-
-	public <T extends Event> void registerEvent(Class<T> eventClass) {
-		setHandler(eventClass, new EventHandler<T>());
-	}
 
 	public <T extends Event> void dispatchEvent(Class<T> eventClass, T event) {
 		getHandler(eventClass).dispatchEvent(event);
