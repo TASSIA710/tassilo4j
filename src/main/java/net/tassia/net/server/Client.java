@@ -3,6 +3,7 @@ package net.tassia.net.server;
 import net.tassia.io.DataInputStream;
 import net.tassia.io.DataOutputStream;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public interface Client {
@@ -13,7 +14,7 @@ public interface Client {
 	int getClientID();
 	InetSocketAddress getAddress();
 
-	void disconnect();
+	void disconnect() throws IOException;
 	boolean isAvailable();
 
 }
