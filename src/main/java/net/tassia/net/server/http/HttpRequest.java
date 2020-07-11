@@ -9,6 +9,7 @@ public interface HttpRequest {
     HttpProtocol getProtocolVersion();
     HttpMethod getMethod();
     Map<String, String> getHeaders();
+    String getRequestURI();
     byte[] getContent();
 
     HttpServer<? extends Client> getServer();
