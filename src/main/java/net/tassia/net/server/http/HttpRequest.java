@@ -1,5 +1,7 @@
 package net.tassia.net.server.http;
 
+import net.tassia.net.server.Client;
+
 import java.util.Map;
 
 public interface HttpRequest {
@@ -9,8 +11,8 @@ public interface HttpRequest {
     Map<String, String> getHeaders();
     byte[] getContent();
 
-    HttpServer<? extends HttpClient> getServer();
-    HttpClient getClient();
+    HttpServer<? extends Client> getServer();
+    Client getClient();
 
 
 
