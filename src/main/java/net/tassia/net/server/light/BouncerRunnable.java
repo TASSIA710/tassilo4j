@@ -1,5 +1,7 @@
 package net.tassia.net.server.light;
 
+import net.tassia.net.server.event.ServerClientConnectEvent;
+import net.tassia.net.server.event.ServerClientConnectedEvent;
 import net.tassia.net.server.event.ServerIncomingConnectionEvent;
 
 import java.io.IOException;
@@ -63,8 +65,14 @@ class BouncerRunnable implements Runnable {
 			}
 
 			// Dispatch ServerClientConnectEvent
+			ServerClientConnectEvent event2 = new ServerClientConnectEvent(server, client);
+			server.getEventManager().dispatchEvent(ServerClientConnectEvent.class, event2);
+
+			if (!event2.getClient().isAvailable()) return;
 
 			// Dispatch ServerClientConnectedEvent
+			ServerClientConnectedEvent event3 = new ServerClientConnectedEvent(server, client);
+			server.getEventManager().dispatchEvent(ServerClientConnectedEvent.class, event3);
 		}
 	}
 
