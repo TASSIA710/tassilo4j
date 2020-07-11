@@ -12,7 +12,7 @@ public class EventManager {
 
 
 
-	protected <T extends Event> EventHandler<T> getHandler(Class<T> eventClass) {
+	public <T extends Event> EventHandler<T> getHandler(Class<T> eventClass) {
 		EventHandler<T> handler = (EventHandler<T>) handlers.get(eventClass.getName());
 		if (handler == null) {
 			handler = new EventHandler<T>();
