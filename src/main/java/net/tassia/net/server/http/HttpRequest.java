@@ -12,4 +12,14 @@ public interface HttpRequest {
     HttpServer<? extends HttpClient> getServer();
     HttpClient getClient();
 
+
+
+    default String getHeader(String name) {
+        return getHeaders().get(name);
+    }
+
+    default boolean hasHeader(String name) {
+        return getHeader(name) != null;
+    }
+
 }
